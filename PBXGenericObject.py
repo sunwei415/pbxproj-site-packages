@@ -173,7 +173,7 @@ class PBXGenericObject(object):
     @classmethod
     def _escape(cls, item):
         if item.__len__() == 0 or re.match(cls._VALID_KEY_REGEX, item).group(0) != item:
-            escaped = item.replace(u'\\', u'\\\\')\
+            escaped = item.decode('utf-8').replace(u'\\', u'\\\\')\
                 .replace(u'\n', u'\\n')\
                 .replace(u'\"', u'\\"')\
                 .replace(u'\0', u'\\0')\

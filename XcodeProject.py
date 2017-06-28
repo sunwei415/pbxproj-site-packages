@@ -26,7 +26,9 @@ class XcodeProject(PBXGenericObject, ProjectFiles, ProjectFlags, ProjectGroups):
         if path is None:
             path = self._pbxproj_path
 
-        f = open(path, 'w')
+        import codecs
+
+        f = codecs.open(path, "w", "utf-8")
         f.write(self.__repr__())
         f.close()
 
