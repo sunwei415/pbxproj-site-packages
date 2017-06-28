@@ -212,7 +212,7 @@ class ProjectFiles:
         """
         files = []
         for file_ref in self.objects.get_objects_in_section(u'PBXFileReference'):
-            if file_ref.path == path and file_ref.sourceTree == tree:
+            if path in file_ref.path:
                 files.append(file_ref)
 
         return files
