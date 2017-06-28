@@ -35,6 +35,8 @@ class PBXBuildFile(PBXGenericObject):
                                                        indentation_increment=u'')
 
     def _get_comment(self):
+        if not hasattr(self, 'fileRef'):
+            return u'{0} in {1}'.format('None fileRef comment', self._get_section())
         return u'{0} in {1}'.format(self.fileRef._get_comment(), self._get_section())
 
     def _get_section(self):

@@ -27,7 +27,7 @@ class FileOptions:
         :param create_build_files: Creates any necessary PBXBuildFile section when adding the file
         :param weak: When adding a framework set it as a weak reference
         :param ignore_unknown_type: Stop insertion if the file type is unknown (Default is false)
-        :param embed_framework: When adding a framework lets the embed section
+        :param embed_framework: When adding a framework sets the embed section
         :param code_sign_on_copy: When embedding a framework, sets the code sign attribute
         """
         self.create_build_files = create_build_files
@@ -237,6 +237,8 @@ class ProjectFiles:
                 for build_file_id in build_phase.files:
                     build_file = self.objects[build_file_id]
 
+                    if not hasattr(build_file, 'fileRef'):
+                        continue
                     if build_file.fileRef == file_ref.get_id():
                         # remove the build file from the phase
                         build_phase.remove_build_file(build_file)
@@ -244,10 +246,13 @@ class ProjectFiles:
                 # if the build_phase is empty remove it too
                 if build_phase.files.__len__() == 0:
                     # remove the build phase from the target
-                    target.remove_build_phase(build_phase)
+                    if hasattr(target, 'remove_build_phase'):
+                        target.remove_build_phase(build_phase)
 
         # remove it iff it's removed from all targets or no build file reference it
         for build_file in self.objects.get_objects_in_section(u'PBXBuildFile'):
+            if not hasattr(build_file, 'fileRef'):
+                continue
             if build_file.fileRef == file_ref.get_id():
                 return True
 
